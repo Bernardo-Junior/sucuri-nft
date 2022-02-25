@@ -13,12 +13,16 @@ class Input extends StatelessWidget {
   final bool enableBorder;
   final void Function(String value)? onChange;
   final bool enabled;
+  final String? value;
+  final bool hidePassword;
 
   final bool isRequired;
 
   const Input({
     Key? key,
+    this.hidePassword = false,
     this.controller,
+    this.value,
     this.enabled = true,
     required this.typeInput,
     this.label,
@@ -38,13 +42,30 @@ class Input extends StatelessWidget {
       child: Column(
         children: [
           TextField(
+            cursorColor: Colors.white,
             enabled: enabled,
             controller: controller,
+            obscureText: hidePassword,
             decoration: InputDecoration(
-              prefixIconConstraints: const BoxConstraints(maxWidth: 30),
-              suffixIconConstraints: const BoxConstraints(
-                maxWidth: 30,
-                maxHeight: 40,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+              filled: true,
+              fillColor: const Color(0XFF193555),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: value != null && value!.isNotEmpty
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8),
               ),
               prefixIcon: prefixIcon,
               labelText: hint,
@@ -55,7 +76,9 @@ class Input extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
                 letterSpacing: 0.2,
-                color: enabled ? const Color(0XFF818E9B) : Colors.grey,
+                color: enabled
+                    ? Theme.of(context).colorScheme.secondary
+                    : Colors.grey,
               ),
               hintStyle: GoogleFonts.roboto(
                 fontStyle: FontStyle.normal,
@@ -73,8 +96,12 @@ class Input extends StatelessWidget {
             inputFormatters: formatter,
             keyboardType: TextInputType.number,
             onChanged: onChange,
-            style: const TextStyle(
-              fontSize: 14,
+            style: GoogleFonts.dmSans(
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.normal,
+              fontSize: 18,
+              letterSpacing: 0.2,
+              color: const Color(0XFFFCFDFD),
             ),
           ),
         ],
